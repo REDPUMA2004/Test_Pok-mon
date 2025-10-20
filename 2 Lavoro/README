@@ -1,0 +1,65 @@
+// const url = "http://localhost/be/Test/api/PokemonApi";
+
+// function getUsers() {
+// fetch(url)
+// .then((response) => response.json())
+// .then(async (data) => {
+// console.log(data);
+// var hbs = await fetch("template.hbs").then((res) => res.text());
+// var template = Handlebars.compile(hbs);
+// var html = template(data);
+// document.getElementById("output").innerHTML = html;
+// });
+// }
+
+// --------------------------------------------------------
+
+// async function loadPokemonDropdown() {
+// try {
+// const response = await fetch(url);
+// const pokemons = await response.json();
+
+// const select = document.getElementById("pokemonSelect");
+// const detailsDiv = document.getElementById("pokemonDetails");
+
+// select.innerHTML = '<option value="">Scegli un Pokémon</option>';
+// pokemons.forEach((p) => {
+// const option = document.createElement("option");
+// option.value = p.id;
+// option.textContent = p.nome;
+// select.appendChild(option);
+// });
+
+// select.addEventListener("change", async function () {
+// const id = this.value;
+// if (!id) {
+// detailsDiv.innerHTML = "";
+// return;
+// }
+
+// const res = await fetch(`${url}/${id}`);
+// if (!res.ok) {
+// detailsDiv.innerHTML =
+// '<div class="alert alert-danger">Errore nel caricamento dei dettagli.</div>';
+// return;
+// }
+
+// const pokemon = await res.json();
+// detailsDiv.innerHTML = `//         <div class="card mt-3 w-50">
+//           <div class="card-body">
+//             <h5 class="card-title">${pokemon.nome}</h5>
+//             <p class="card-text">Attacco: <strong>${pokemon.attacco}</strong></p>
+//             <p class="card-text">Difesa: <strong>${pokemon.difesa}</strong></p>
+//           </div>
+//         </div>
+//      `;
+// });
+// } catch (error) {
+// console.error("Errore caricando la lista Pokémon:", error);
+// }
+// }
+
+// getUsers();
+// loadPokemonDropdown();
+
+// --------------------------------------------------------

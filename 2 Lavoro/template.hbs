@@ -1,0 +1,53 @@
+<div class="container mb-4">
+  <table id="pokemonTable" class="table table-hover text-center align-middle custom-table">
+    <thead class="table-dark">
+      <tr>
+        <th>Nome</th>
+        <th>Attacco</th>
+        <th>Difesa</th>
+        <th>Azioni</th>
+      </tr>
+    </thead>
+    <tbody>
+      {{#each .}}
+      <tr>
+        <td class="open-modal" data-id="{{id}}">{{nome}}</td>
+        <td class="open-modal" data-id="{{id}}">{{attacco}}</td>
+        <td class="open-modal" data-id="{{id}}">{{difesa}}</td>
+        <td>
+          <button class="btn btn-danger btn-sm" onclick="deletePokemon({{id}})">Elimina</button>
+          <button class="btn btn-success btn-sm" onclick="updatePokemon({{id}})">Modifica</button>
+        </td>
+      </tr>
+      {{/each}}
+    </tbody>
+  </table>
+
+  <button class="btn btn-warning" onclick="insertPokemon()">Inserisci</button>
+</div>
+
+{{#each .}}
+<div id="modal-{{id}}" class="modal" style="display: none">
+  <div class="modal-content">
+    <h2>Dettagli Pokémon</h2>
+    <table class="table table-striped text-center align-middle custom-table">
+      <thead class="table-dark">
+        <tr>
+          <th>ID</th>
+          <th>Nome</th>
+          <th>Attacco</th>
+          <th>Difesa</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>{{id}}</td>
+          <td>{{nome}}</td>
+          <td>{{attacco}}</td>
+          <td>{{difesa}}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+{{/each}}

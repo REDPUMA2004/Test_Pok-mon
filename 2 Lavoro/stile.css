@@ -1,0 +1,73 @@
+table {
+  width: 300px;
+  margin: 20px auto;
+  border-collapse: collapse;
+  background: #f8f8f8;
+  border: 2px solid #ccc;
+  font-family: Arial;
+}
+
+th {
+  text-align: left;
+  padding: 10px 15px;
+  border-bottom: 1px solid #ddd;
+  font-size: 16px;
+  color: #333;
+}
+
+table:hover {
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.15);
+}
+
+h1 {
+  text-align: center;
+  font-family: Arial;
+  color: #444;
+  margin-top: 20px;
+}
+
+.action-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  margin-top: 10px;
+}
+
+.action-link {
+  text-decoration: none;
+  padding: 8px;
+  border-radius: 50%;
+  transition: all 0.3s ease;
+}
+
+.action-link.delete {
+  color: #dc3545;
+}
+
+.action-link.update {
+  color: #28a745;
+}
+
+.btn {
+  color: white;
+  font-family: Helvetica, Arial, Sans-Serif;
+  font-size: 20px;
+  text-decoration: none;
+  text-shadow: -1px -1px 1px #616161;
+  position: relative;
+  padding: 15px 30px;
+  box-shadow: 5px 5px 0 #666;
+  -webkit-transition: all 0.3s ease;
+  -moz-transition: all 0.3s ease;
+  -o-transition: all 0.3s ease;
+  -ms-transition: all 0.3s ease;
+  transition: all 0.3s ease;
+  margin: 10px;
+  display: inline-block;
+  border-radius: 8px;
+}
+
+.custom-table th,
+.custom-table td {
+  border: 1px solid #50575d;
+}
