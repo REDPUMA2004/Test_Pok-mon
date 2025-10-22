@@ -16,38 +16,38 @@
         <td class="open-modal" data-id="{{id}}">{{difesa}}</td>
         <td>
           <button class="btn btn-danger btn-sm" onclick="deletePokemon({{id}})">Elimina</button>
-          <button class="btn btn-success btn-sm" onclick="updatePokemon({{id}})">Modifica</button>
+          <button class="btn btn-warning btn-sm open-modal" data-id="{{id}}">Modifica</button>
         </td>
       </tr>
       {{/each}}
     </tbody>
   </table>
 
-  <button class="btn btn-warning" onclick="insertPokemon()">Inserisci</button>
+  <button class="btn btn-warning open-modal" data-id="0">Inserisci</button>
 </div>
 
-{{#each .}}
-<div id="modal-{{id}}" class="modal" style="display: none">
+<div id="pokemon-modal" class="modal" style="display: none;">
+  <div class="modal-overlay"></div>
   <div class="modal-content">
-    <h2>Dettagli Pokémon</h2>
-    <table class="table table-striped text-center align-middle custom-table">
-      <thead class="table-dark">
-        <tr>
-          <th>ID</th>
-          <th>Nome</th>
-          <th>Attacco</th>
-          <th>Difesa</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td>{{id}}</td>
-          <td>{{nome}}</td>
-          <td>{{attacco}}</td>
-          <td>{{difesa}}</td>
-        </tr>
-      </tbody>
-    </table>
+    <h2 id="modal-title">Modifica Dettagli Pokémon</h2>
+    <form id="editForm">
+      <input type="hidden" id="pokemon-id" value="0" />
+      <div class="mb-3">
+        <label for="nome" class="form-label">Nome <span class="required">*</span></label>
+        <input type="text" id="nome" class="form-control" required>
+      </div>
+      <div class="mb-3">
+        <label for="attacco" class="form-label">Attacco <span class="required">*</span></label>
+        <input type="number" id="attacco" class="form-control" min="0" required>
+      </div>
+      <div class="mb-3">
+        <label for="difesa" class="form-label">Difesa <span class="required">*</span></label>
+        <input type="number" id="difesa" class="form-control" min="0" required>
+      </div>
+      <div class="modal-buttons">
+        <button type="submit" class="btn btn-success">Salva</button>
+        <button type="button" class="btn btn-secondary close-modal">Annulla</button>
+      </div>
+    </form>
   </div>
 </div>
-{{/each}}

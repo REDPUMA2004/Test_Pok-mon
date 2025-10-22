@@ -22,6 +22,96 @@ async function getUsers() {
     //     paginate: { previous: "Precedente", next: "Successivo" },
     //   },
     // });
+
+    $(document).on("click", ".open-modal", async function (e) {
+      const id = Number($(this).data("id"));
+
+      if (id === 0) {
+        // MODALITA' INSERIMENTO
+        $("#modal-title").text("Inserisci Nuovo Pokémon");
+        $("#pokemon-id").val("0");
+        $("#nome").val("");
+        $("#attacco").val("");
+        $("#difesa").val("");
+        $("#pokemon-modal").show();
+      } else {
+        // MODALITA' MODIFICA
+        $("#modal-title").text("Modifica Dettagli Pokémon");
+        try {
+          const res = await fetch(`${url}/${id}`);
+          if (!res.ok) throw new Error("Errore nel recupero dati");
+          const pokemon = await res.json();
+
+          $("#pokemon-id").val(pokemon.id);
+          $("#nome").val(pokemon.nome);
+          $("#attacco").val(pokemon.attacco);
+          $("#difesa").val(pokemon.difesa);
+          $("#pokemon-modal").show();
+        } catch (err) {
+          console.error("Errore nel caricamento del Pokémon:", err);
+          alert("Errore nel recupero dei dati.");
+        }
+      }
+    });
+
+    $(document).on("click", ".close-modal, .modal-overlay", function () {
+      $("#pokemon-modal").hide();
+    });
+
+    $("#editForm").submit(async function (e) {
+      e.preventDefault();
+      // ID MODULO NON PRESENTE O NON INIZIA CON editForm-
+      var id = parseInt($("#pokemon-id").val());
+      var nome = $("#nome").val();
+      var attacco = parseInt($("#attacco").val());
+      var difesa = parseInt($("#difesa").val());
+
+      if (!nome || isNaN(attacco) || isNaN(difesa)) {
+        return alert("Per favore, inserisci valori validi!");
+      }
+
+      try {
+        let response;
+        if (id == 0) {
+          // INSERIMENTO (POST)
+          response = await fetch(`${url}/insert`, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              Accept: "application/json",
+            },
+            body: JSON.stringify({
+              Nome: nome,
+              Attacco: attacco,
+              Difesa: difesa,
+            }),
+          });
+        } else {
+          // AGGIORNAMENTO (PUT)
+          response = await fetch(
+            `${url}/update?id=${id}&nome=${nome}&attacco=${attacco}&difesa=${difesa}`,
+            {
+              method: "PUT",
+              headers: {
+                "Content-Type": "application/json",
+                Accept: "application/json",
+              },
+            }
+          );
+        }
+
+        if (!response.ok) throw new Error(await response.text());
+
+        alert(
+          id == 0 ? "Pokémon inserito con successo!" : "Pokémon aggiornato!"
+        );
+        $("#pokemon-modal").hide();
+        getUsers();
+      } catch (error) {
+        console.error("Errore nel salvataggio:", error);
+        alert("Errore durante il salvataggio del Pokémon.");
+      }
+    });
   } catch (error) {
     console.error("Errore durante il fetch dei dati:", error);
   }
@@ -29,157 +119,51 @@ async function getUsers() {
 
 // --------------------------------------------------------
 
+// function deletePokemon(id) {
+//   fetch(`${url}/delete?id=${id}`, {
+//     method: "DELETE",
+//     headers: {
+//       Accept: "application/json",
+//       "Content-Type": "application/json",
+//     },
+//   })
+//     .then((response) => {
+//       if (response.ok) {
+//         console.log("Pokemon eliminato con successo");
+//         getUsers();
+//       } else {
+//         console.error("Errore durante l'eliminazione");
+//       }
+//     })
+//     .catch((error) => console.error("Unable to delete pokemon.", error));
+// }
+
+// --------------------------------------------------------
+
 function deletePokemon(id) {
-  fetch(`${url}/delete?id=${id}`, {
+  $.ajax({
+    url: `${url}/delete?id=${id}`,
     method: "DELETE",
     headers: {
       Accept: "application/json",
       "Content-Type": "application/json",
     },
-  })
-    .then((response) => {
-      if (response.ok) {
-        console.log("Pokemon eliminato con successo");
-        getUsers();
-        loadPokemonDropdown();
-      } else {
-        console.error("Errore durante l'eliminazione");
-      }
-    })
-    .catch((error) => console.error("Unable to delete pokemon.", error));
+    success: function (response) {
+      console.log("Pokémon eliminato con successo");
+      getUsers();
+    },
+    error: function (xhr, status, error) {
+      console.error("Errore durante l'eliminazione", error);
+    },
+  });
 }
 
 // --------------------------------------------------------
 
-function updatePokemon(id) {
-  fetch(`${url}/${id}`)
-    .then((res) => res.json())
-    .then((pokemon) => {
-      const nome = prompt("Modifica il nome:", pokemon.nome);
-      const attacco = prompt("Modifica l'attacco:", pokemon.attacco);
-      const difesa = prompt("Modifica la difesa:", pokemon.difesa);
-
-      fetch(
-        `${url}/update?id=${id}&nome=${nome}&attacco=${attacco}&difesa=${difesa}`,
-        {
-          method: "PUT",
-          headers: {
-            Accept: "application/json",
-            "Content-Type": "application/json",
-          },
-        }
-      )
-        .then((res) => {
-          if (res.ok) getUsers();
-          else console.error("Errore durante l'aggiornamento");
-        })
-        .catch((err) => console.error("Errore PUT:", err));
-    })
-    .catch((err) => console.error("Errore GET:", err));
-}
+// QUANDO APRI MODALE FAI GET BY ID, SE ID = 0, O RITORNI NULLA O NON FAI GET,
+// 1 STEP, 2 STEP IL LAVATAGGIO SE ID LETTO = 0 DEVO FARE UNA POST, ALTRIMENTI
+// FACCIO UNA PUT E GLI PASSO I CAMPI (FETCH DELLA GET)
 
 // --------------------------------------------------------
-
-async function insertPokemon() {
-  const nome = prompt("Inserisci il nome:");
-  const attacco = Number(prompt("Inserisci l'attacco:"));
-  const difesa = Number(prompt("Inserisci la difesa:"));
-
-  if (!nome || isNaN(attacco) || isNaN(difesa)) {
-    alert("Inserisci un nome valido e numeri per attacco e difesa!");
-    return;
-  }
-
-  try {
-    const response = await fetch(`${url}/insert`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Accept: "application/json",
-      },
-      body: JSON.stringify({ Nome: nome, Attacco: attacco, Difesa: difesa }),
-    });
-
-    if (!response.ok) {
-      throw new Error(await response.text());
-    }
-
-    const result = await response.json();
-    console.log("Inserimento avvenuto con successo:", result);
-    getUsers();
-  } catch (error) {
-    console.error("Errore durante l'inserimento:", error);
-    alert("Errore durante l'inserimento. Controlla la console.");
-  }
-}
-
-// --------------------------------------------------------
-
-document.addEventListener("click", function (e) {
-  if (e.target.classList.contains("open-modal")) {
-    const id = e.target.dataset.id;
-    const modal = document.getElementById(`modal-${id}`);
-    if (modal) modal.style.display = "flex";
-  }
-
-  if (e.target.classList.contains("close-modal")) {
-    const modal = e.target.closest(".modal");
-    modal.style.display = "none";
-  }
-
-  if (e.target.classList.contains("modal")) {
-    e.target.style.display = "none";
-  }
-});
-
-// --------------------------------------------------------
-
-// async function loadPokemonDropdown() {
-// try {
-// const response = await fetch(url);
-// const pokemons = await response.json();
-
-// const select = document.getElementById("pokemonSelect");
-// const detailsDiv = document.getElementById("pokemonDetails");
-
-// select.innerHTML = '<option value="">Scegli un Pokémon</option>';
-// pokemons.forEach((p) => {
-// const option = document.createElement("option");
-// option.value = p.id;
-// option.textContent = p.nome;
-// select.appendChild(option);
-// });
-
-// select.addEventListener("change", async function () {
-// const id = this.value;
-// if (!id) {
-// detailsDiv.innerHTML = "";
-// return;
-// }
-
-// const res = await fetch(`${url}/${id}`);
-// if (!res.ok) {
-// detailsDiv.innerHTML =
-// '<div class="alert alert-danger">Errore nel caricamento dei dettagli.</div>';
-// return;
-// }
-
-// const pokemon = await res.json();
-// detailsDiv.innerHTML = `//         <div class="card mt-3 w-50">
-//           <div class="card-body">
-//             <h5 class="card-title">${pokemon.nome}</h5>
-//             <p class="card-text">Attacco: <strong>${pokemon.attacco}</strong></p>
-//             <p class="card-text">Difesa: <strong>${pokemon.difesa}</strong></p>
-//           </div>
-//         </div>
-//      `;
-// });
-// } catch (error) {
-// console.error("Errore caricando la lista Pokémon:", error);
-// }
-// }
-
-// getUsers();
-// loadPokemonDropdown();
 
 getUsers();
