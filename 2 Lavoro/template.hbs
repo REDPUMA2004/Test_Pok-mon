@@ -16,20 +16,17 @@
         <td class="open-modal" data-id="{{id}}">{{difesa}}</td>
         <td>
           <button class="btn btn-danger btn-sm" onclick="deletePokemon({{id}})">Elimina</button>
-          <button class="btn btn-warning btn-sm open-modal" data-id="{{id}}">Modifica</button>
+          <button class="btn btn-warning open-modal" data-id="0">Inserisci</button>
         </td>
       </tr>
       {{/each}}
     </tbody>
   </table>
-
-  <button class="btn btn-warning open-modal" data-id="0">Inserisci</button>
 </div>
 
 <div id="pokemon-modal" class="modal" style="display: none;">
   <div class="modal-overlay"></div>
   <div class="modal-content">
-    <h2 id="modal-title">Modifica Dettagli Pokémon</h2>
     <form id="editForm">
       <input type="hidden" id="pokemon-id" value="0" />
       <div class="mb-3">

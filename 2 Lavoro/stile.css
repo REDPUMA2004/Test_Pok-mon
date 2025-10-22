@@ -50,7 +50,7 @@ h1 {
 
 .btn {
   color: white;
-  font-family: Helvetica, Arial, Sans-Serif;
+  font-family: Arial;
   font-size: 20px;
   text-decoration: none;
   text-shadow: -1px -1px 1px #616161;
@@ -160,7 +160,7 @@ input.form-control {
   max-width: 600px;
   width: 90%;
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
-  font-family: "Arial", sans-serif;
+  font-family: "Arial";
   z-index: 1001;
   margin: 0 auto;
   transform: translateY(-50%);
