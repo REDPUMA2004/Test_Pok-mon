@@ -2,31 +2,33 @@
   <table id="pokemonTable" class="table table-hover text-center align-middle custom-table">
     <thead class="table-dark">
       <tr>
-        <th>Nome</th>
-        <th>Attacco</th>
-        <th>Difesa</th>
-        <th>Azioni</th>
+        <th><i class="bi bi-tag"></i> Nome</th>
+        <th><i class="bi bi-fire"></i> Attacco</th>
+        <th><i class="bi bi-shield"></i> Difesa</th>
+        <th><i class="bi bi-gear"></i> Azioni</th>
       </tr>
     </thead>
     <tbody>
       {{#each .}}
       <tr>
-        <td class="open-modal" data-id="{{id}}">{{nome}}</td>
-        <td class="open-modal" data-id="{{id}}">{{attacco}}</td>
-        <td class="open-modal" data-id="{{id}}">{{difesa}}</td>
+        <td data-id="{{id}}">{{nome}}</td>
+        <td data-id="{{id}}">{{attacco}}</td>
+        <td data-id="{{id}}">{{difesa}}</td>
         <td>
-          <button class="btn btn-danger btn-sm" onclick="deletePokemon({{id}})">Elimina</button>
-          <button class="btn btn-warning open-modal" data-id="0">Inserisci</button>
+          <button class="btn btn-danger btn-sm" onclick="deletePokemon({{id}})"><i class="bi bi-x-circle"> </i>Elimina</i></button>
+          <button class="btn btn-warning btn-sm open-modal" data-id="{{id}}"><i class="bi bi-pencil-square"></i> Modifica</button>
         </td>
       </tr>
       {{/each}}
     </tbody>
   </table>
+  <button class="btn btn-success open-modal" data-id="0"><i class="bi bi-plus-circle"> </i>Inserisci</i></button>
 </div>
 
 <div id="pokemon-modal" class="modal" style="display: none;">
   <div class="modal-overlay"></div>
   <div class="modal-content">
+    <h2 id="modal-title">Modifica Dettagli Pokémon</h2>
     <form id="editForm">
       <input type="hidden" id="pokemon-id" value="0" />
       <div class="mb-3">
@@ -46,5 +48,17 @@
         <button type="button" class="btn btn-secondary close-modal">Annulla</button>
       </div>
     </form>
+  </div>
+</div>
+
+<div id="delete-modal" class="modal" style="display: none;">
+  <div class="modal-overlay"></div>
+  <div class="modal-content">
+    <h2>Conferma Eliminazione</h2>
+    <p>Sei sicuro di voler eliminare questo Pokémon?</p>
+    <div class="modal-buttons">
+      <button id="confirm-delete" class="btn btn-danger">Elimina</button>
+      <button id="cancel-delete" class="btn btn-secondary">Annulla</button>
+    </div>
   </div>
 </div>

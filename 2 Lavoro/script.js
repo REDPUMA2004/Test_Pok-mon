@@ -60,7 +60,6 @@ async function getUsers() {
 
     $("#editForm").submit(async function (e) {
       e.preventDefault();
-      // ID MODULO NON PRESENTE O NON INIZIA CON editForm-
       var id = parseInt($("#pokemon-id").val());
       var nome = $("#nome").val();
       var attacco = parseInt($("#attacco").val());
@@ -140,29 +139,41 @@ async function getUsers() {
 
 // --------------------------------------------------------
 
+let pokemonToDelete = null;
+
 function deletePokemon(id) {
-  $.ajax({
-    url: `${url}/delete?id=${id}`,
-    method: "DELETE",
-    headers: {
-      Accept: "application/json",
-      "Content-Type": "application/json",
-    },
-    success: function (response) {
-      console.log("Pokémon eliminato con successo");
-      getUsers();
-    },
-    error: function (xhr, status, error) {
-      console.error("Errore durante l'eliminazione", error);
-    },
-  });
+  pokemonToDelete = id;
+
+  const deleteModal = document.getElementById("delete-modal");
+  deleteModal.style.display = "flex";
+
+  document.getElementById("cancel-delete").onclick = () => {
+    deleteModal.style.display = "none";
+    pokemonToDelete = null;
+  };
+
+  document.getElementById("confirm-delete").onclick = () => {
+    $.ajax({
+      url: `${url}/delete?id=${pokemonToDelete}`,
+      method: "DELETE",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      success: function (response) {
+        console.log("Pokémon eliminato con successo");
+        getUsers();
+      },
+      error: function (xhr, status, error) {
+        console.error("Errore durante l'eliminazione", error);
+      },
+      complete: function () {
+        deleteModal.style.display = "none";
+        pokemonToDelete = null;
+      },
+    });
+  };
 }
-
-// --------------------------------------------------------
-
-// QUANDO APRI MODALE FAI GET BY ID, SE ID = 0, O RITORNI NULLA O NON FAI GET,
-// 1 STEP, 2 STEP IL LAVATAGGIO SE ID LETTO = 0 DEVO FARE UNA POST, ALTRIMENTI
-// FACCIO UNA PUT E GLI PASSO I CAMPI (FETCH DELLA GET)
 
 // --------------------------------------------------------
 

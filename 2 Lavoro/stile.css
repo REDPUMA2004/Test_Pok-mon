@@ -50,7 +50,7 @@ h1 {
 
 .btn {
   color: white;
-  font-family: Arial;
+  font-family: Helvetica, Arial, Sans-Serif;
   font-size: 20px;
   text-decoration: none;
   text-shadow: -1px -1px 1px #616161;
@@ -160,7 +160,7 @@ input.form-control {
   max-width: 600px;
   width: 90%;
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
-  font-family: "Arial";
+  font-family: "Arial", sans-serif;
   z-index: 1001;
   margin: 0 auto;
   transform: translateY(-50%);
@@ -172,4 +172,18 @@ input.form-control {
   color: #333;
   font-weight: 600;
   text-align: center;
+}
+
+.btn-danger {
+  background-color: #dc3545;
+  border: none;
+  padding: 10px 25px;
+  border-radius: 8px;
+  color: white;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+.btn-danger:hover {
+  background-color: #c82333;
 }
